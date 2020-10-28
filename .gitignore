@@ -23,8 +23,12 @@
 hs_err_pid*
 
 # About IntelliJ
-*.iml
-/.idea/
 /out/
+#忽略所有.svn目录
+.svn/
+#忽略所有target目录
 target/
-.idea/*
+#忽略所有.idea目录
+.idea/
+#忽略所有.iml文件
+*.iml
