@@ -2,7 +2,10 @@ package com.imooc.service.impl;
 
 import com.imooc.mapper.UsersMapper;
 import com.imooc.pojo.Users;
+import com.imooc.pojo.bo.UserBO;
 import com.imooc.service.UserService;
+import com.imooc.utils.DateUtil;
+import com.imooc.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,6 +17,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UsersMapper usersMapper;
+
+    public static final String USER_FACE = "http://122.152.205.72:88/group1/M00/00/05/CpoxxFw_8_qAIlFXAAAcIhVPdSg994.png";
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -27,5 +32,24 @@ public class UserServiceImpl implements UserService {
 
         return result != null;
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Users createUser(UserBO userBO) {
+
+        Users user = new Users();
+        user.setUsername(userBO.getUsername());
+        try {
+            user.setPassword(MD5Utils.getMD5Str(userBO.getPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 默认昵称同用户名
+        user.setNickname(userBO.getUsername());
+        user.setFace(USER_FACE);
+        user.setBirthday(DateUtil.stringToDate("1900-01-01"));
+
+        return null;
     }
 }
